@@ -50,6 +50,27 @@ THE SOFTWARE.
 					case 'litecoin': 
 						$response = get_litecoin($address);
 						break;
+					case 'dogecoin': 
+						$response = get_dogecoin($address);
+						break;
+					case 'peercoin': 
+						$response = get_peercoin($address);
+						break;
+					case 'quark': 
+						$response = get_quark($address);
+						break;
+					case 'primecoin': 
+						$response = get_primecoin($address);
+						break;
+					case 'monacoin': 
+						$response = get_monacoin($address);
+						break;
+					case 'sakuracoin': 
+						$response = get_sakuracoin($address);
+						break;
+					case 'sha1coin': 
+						$response = get_sha1coin($address);
+						break;	
 				}
 				$responses[$instance] = $response;
 			}
@@ -84,6 +105,96 @@ THE SOFTWARE.
 		  	return $return;
 		}
 	}
+	
+	function get_dogecoin($address) {
+			$return = array();
+			$data = get_request('http://dogechain.info/address/'.$address);
+			if (!empty($data)) {
+				$return += array(
+				'count' => (int) strip_tags(parse($data,'Transactions in','</tr>')),
+				'amount' => (float) strip_tags(parse($data,'Received','</tr>'))
+			);
+			return $return;
+			}
+		}
+	
+	function get_peercoin($address) {
+		$return = array();
+		$data = get_request('http://ppc.cryptocoinexplorer.com/address/'.$address);
+		if (!empty($data)) {
+		  	$return += array(
+				'count' => (int) parse($data,'Transactions in: ','<br />'),
+				'amount' => (float) parse($data,'Received: ','<br />')
+			);
+		  	return $return;
+		}
+	}
+	
+
+	function get_quark($address) {
+		$return = array();
+		$data = get_request('http://176.221.46.81/address/'.$address);
+		if (!empty($data)) {
+		  	$return += array(
+				'count' => (int) parse($data,'Transactions in: ','<br />'),
+				'amount' => (float) parse($data,'Received: ','<br />')
+			);
+		  	return $return;
+		}
+	}
+	
+	
+	function get_primecoin($address) {
+		/* it also counts transactions out */
+		$return = array();
+		$data = get_request('https://coinplorer.com/XPM/Addresses/'.$address);
+		if (!empty($data)) {
+		  	$return += array(
+				'count' => (int) strip_tags(parse($data,'Transactions count:','</tr>')),
+				'amount' => (float) strip_tags(parse($data,'Total received:','</tr>'))
+			);
+		  	return $return;
+		}
+	}
+	
+	
+	
+	function get_monacoin($address) {
+		$return = array();
+		$data = get_request('http://explorer.cryptopoolmining.com/address/'.$address);
+		if (!empty($data)) {
+		  	$return += array(
+				'count' => (int) parse($data,'Transactions in: ','<br />'),
+				'amount' => (float) parse($data,'Received: ',' MON<br />')
+			);
+		  	return $return;
+		}
+	}
+	
+	function get_sakuracoin($address) {
+		$return = array();
+		$data = get_request('http://abe.sighash.info/address/'.$address);
+		if (!empty($data)) {
+		  	$return += array(
+				'count' => (int) parse($data,'Transactions in: ','<br />'),
+				'amount' => (float) parse($data,'Received: ',' SKR<br />')
+			);
+		  	return $return;
+		}
+	}
+
+	
+	function get_sha1coin($address) {
+		$return = array();
+		$data = get_request('http://abe.sighash.info/address/'.$address);
+		if (!empty($data)) {
+		  	$return += array(
+				'count' => (int) parse($data,'Transactions in: ','<br />'),
+				'amount' => (float) parse($data,'Received: ',' SHA<br />')
+			);
+		  	return $return;
+		}
+	}	
 
 	function get_request($url,$timeout=4) {
 		if (function_exists('curl_version')) {
