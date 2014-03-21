@@ -59,14 +59,15 @@ THE SOFTWARE.
 
 	function get_bitcoin($address) {
 		$return = array();
-		$data = get_request('http://blockchain.info/address/'.$address.'?format=json&limit=0');
-		if (!empty($data)) {
-			$data = json_decode($data);
-			$return += array(
-				'count' => (int) $data->n_tx,
-				'amount' => (float) $data->total_received/100000000
+		$data = get_request('http://blockexplorer.com/address/'.$address);
+		if (!empty($data) 
+		  && strstr($data, 'Received transactions: ') 
+		  && strstr($data, 'Received BTC: ')) {
+		  	$return += array(
+				'count' => (int) parse($data,'Received transactions: ','</li>'),
+				'amount' => (float) parse($data,'Received BTC: ','</li>')
 			);
-			return $return;
+		  	return $return;
 		}
 	}
 
