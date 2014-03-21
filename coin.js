@@ -51,24 +51,65 @@ var CoinWidgetCom = {
 		$accepted['currencies'] = ['bitcoin','litecoin'];
 		$accepted['counters'] = ['count','amount','hide'];
 		$accepted['alignment'] = ['al','ac','ar','bl','bc','br'];
+		$accepted['languages'] = ['jp','en'];
+		var currency_UpperCase = config.currency.charAt(0).toUpperCase() + config.currency.slice(1);
 		if (!config.currency || !CoinWidgetCom.in_array(config.currency,$accepted['currencies']))
 			config.currency = 'bitcoin';
 		if (!config.counter || !CoinWidgetCom.in_array(config.counter,$accepted['counters']))
 			config.counter = 'count';
 		if (!config.alignment || !CoinWidgetCom.in_array(config.alignment,$accepted['alignment']))
 			config.alignment = 'bl';
+		if (!config.languages || !CoinWidgetCom.in_array(config.languages,$accepted['languages']))
+			config.languages = 'jp';
 		if (typeof config.qrcode != 'boolean')
 			config.qrcode = true;
 		if (typeof config.auto_show != 'boolean')
 			config.auto_show = false;
-		if (!config.wallet_address)
-			config.wallet_address = 'My '+ config.currency +' wallet_address is missing!';
-		if (!config.lbl_button) 
-			config.lbl_button = 'Donate';
-		if (!config.lbl_address)
-			config.lbl_address = 'My Bitcoin Address:';
-		if (!config.lbl_count)
-			config.lbl_count = 'Donation';
+			
+		if (!config.wallet_address){
+		switch(config.languages){
+			case 'en':
+				config.wallet_address = 'My '+ currency_UpperCase +' wallet_address is missing!';
+				break;
+			case 'jp':
+				config.wallet_address = currency_UpperCase +'の財布アドレスが見つかりません!';
+				break;
+		}
+		}
+		
+		if (!config.lbl_button){
+		switch(config.languages){
+			case 'en':
+				config.lbl_button = 'Donate';
+				break;
+			case 'jp':
+				config.lbl_button = '寄付する';
+				break;
+		}
+		}
+		
+		if (!config.lbl_address){
+		switch(config.languages){
+			case 'en':
+				config.lbl_address = 'My '+ currency_UpperCase + ' Address:';
+				break;
+			case 'jp':
+				config.lbl_address = currency_UpperCase + 'を以下のアドレスに寄付する:';
+				break;
+		}
+		}
+		
+		if (!config.lbl_count){
+		switch(config.languages){
+			case 'en':
+				config.lbl_count = 'Donation';
+				break;
+			case 'jp':
+				config.lbl_count = '回';
+				break;
+		}
+		}
+		
 		if (!config.lbl_amount)
 			config.lbl_amount = 'BTC';
 		if (typeof config.decimals != 'number' || config.decimals < 0 || config.decimals > 10)
@@ -192,9 +233,10 @@ var CoinWidgetCom = {
 		$(".COINWIDGETCOM_WINDOW").css({'z-index':99999999998});
 		if (!$(coin_window).length) {
 
-			$sel = !navigator.userAgent.match(/iPhone/i)?'onclick="this.select();"':'onclick="prompt(\'Select all and copy:\',\''+$config.wallet_address+'\');"';
-
-			$html = ''
+			switch($config.languages){
+				case 'en':
+				$sel = !navigator.userAgent.match(/iPhone/i)?'onclick="this.select();"':'onclick="prompt(\'Select all and copy:\',\''+$config.wallet_address+'\');"';
+				$html = ''
 				  + '<label>'+$config.lbl_address+'</label>'
 				  + '<input type="text" readonly '+$sel+'  value="'+$config.wallet_address+'" />'
 				  + '<a class="COINWIDGETCOM_CREDITS" href="http://coindonationwidget.com/" target="_blank">CoinWidget.com(modified by jpbitcoin.com)</a>'
@@ -202,6 +244,22 @@ var CoinWidgetCom = {
   				  + '<a class="COINWIDGETCOM_CLOSER" href="javascript:;" onclick="CoinWidgetCom.hide('+$instance+');" title="Close this window">x</a>'
   				  + '<img class="COINWIDGET_INPUT_ICON" src="'+CoinWidgetCom.source+'/img/icon_'+$config.currency+'.png" width="16" height="16" title="This is a '+$config.currency+' wallet address." />'
 				  ;
+				break;
+				
+				case 'jp':
+				$sel = !navigator.userAgent.match(/iPhone/i)?'onclick="this.select();"':'onclick="prompt(\'次のアドレスをすべて選択しコピーしてください:\',\''+$config.wallet_address+'\');"';
+				$html = ''
+				  + '<label>'+$config.lbl_address+'</label>'
+				  + '<input type="text" readonly '+$sel+'  value="'+$config.wallet_address+'" />'
+				  + '<a class="COINWIDGETCOM_CREDITS" href="http://coindonationwidget.com/jp/" target="_blank">CoinWidget.com(modified by jpbitcoin.com)</a>'
+  				  + '<a class="COINWIDGETCOM_WALLETURI" href="'+$config.currency.toLowerCase()+':'+$config.wallet_address+'" target="_blank" title="ここをクリックするとこのアドレス情報があなたのウォレットに送信されます(あなたのウォレットが対応していない場合、空白のページが表示されるだけなので、手動でアドレスをコピーしてください)" ><img src="'+CoinWidgetCom.source+'/img/icon_wallet.png" /></a>'
+  				  + '<a class="COINWIDGETCOM_CLOSER" href="javascript:;" onclick="CoinWidgetCom.hide('+$instance+');" title="このウィンドウを閉じる">x</a>'
+  				  + '<img class="COINWIDGET_INPUT_ICON" src="'+CoinWidgetCom.source+'/img/icon_'+$config.currency+'.png" width="16" height="16" title="これは'+$config.currency+'のアドレスです。" />'
+				  ;
+				break;
+			}
+	
+				
 			if ($config.counter != 'hide') {
 				$html += '<span class="COINWIDGETCOM_COUNT">0<small>'+$config.lbl_count+'</small></span>'
 				  	  + '<span class="COINWIDGETCOM_AMOUNT end">0.00<small>'+$config.lbl_amount+'</small></span>'
