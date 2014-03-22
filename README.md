@@ -1,3 +1,20 @@
+coindonatoinwidget.com
+==============
+
+This widget is forked from coinwidget.com.
+
+For more information, visit http://coindonationwidget.com/
+
+New features:
+
+Multiple cryptocurrencies support(6 coins plus 3 japanese coins now)
+	Bitcoin, Litecoin, Dogecoin, Peercoin, Primecoin, Quark
+	Monacoin, Sakuracoin, Sha1coin
+
+Multiple language support
+	Japanese(default), English
+
+
 coinwidget.com
 ==============
 
