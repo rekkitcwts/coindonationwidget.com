@@ -59,8 +59,8 @@ var CoinWidgetCom = {
 			config.counter = 'count';
 		if (!config.alignment || !CoinWidgetCom.in_array(config.alignment,$accepted['alignment']))
 			config.alignment = 'bl';
-		if (!config.languages || !CoinWidgetCom.in_array(config.languages,$accepted['languages']))
-			config.languages = 'jp';
+		if (!config.language || !CoinWidgetCom.in_array(config.language,$accepted['languages']))
+			config.language = 'jp';
 		if (typeof config.qrcode != 'boolean')
 			config.qrcode = true;
 		if (typeof config.auto_show != 'boolean')
@@ -78,7 +78,7 @@ var CoinWidgetCom = {
 		}
 		
 		if (!config.lbl_button){
-		switch(config.languages){
+		switch(config.language){
 			case 'en':
 				config.lbl_button = 'Donate';
 				break;
@@ -89,7 +89,7 @@ var CoinWidgetCom = {
 		}
 		
 		if (!config.lbl_address){
-		switch(config.languages){
+		switch(config.language){
 			case 'en':
 				config.lbl_address = 'My '+ currency_UpperCase + ' Address:';
 				break;
@@ -100,7 +100,7 @@ var CoinWidgetCom = {
 		}
 		
 		if (!config.lbl_count){
-		switch(config.languages){
+		switch(config.language){
 			case 'en':
 				config.lbl_count = 'Donation';
 				break;
@@ -233,7 +233,7 @@ var CoinWidgetCom = {
 		$(".COINWIDGETCOM_WINDOW").css({'z-index':99999999998});
 		if (!$(coin_window).length) {
 
-			switch($config.languages){
+			switch($config.language){
 				case 'en':
 				$sel = !navigator.userAgent.match(/iPhone/i)?'onclick="this.select();"':'onclick="prompt(\'Select all and copy:\',\''+$config.wallet_address+'\');"';
 				$html = ''
