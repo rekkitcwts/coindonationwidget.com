@@ -129,20 +129,20 @@ THE SOFTWARE.
 		  	return $return;
 		}
 	}
-	
-
-	function get_quark($address) {
-		$return = array();
-		$data = get_request('http://176.221.46.81/address/'.$address);
-		if (!empty($data)) {
-		  	$return += array(
-				'count' => (int) parse($data,'Transactions in: ','<br />'),
-				'amount' => (float) parse($data,'Received: ','<br />')
-			);
-		  	return $return;
-		}
+ 
+ 	function get_quark($address) {
+ 		/* it also counts transactions out */
+	$return = array();
+	$data = get_request('http://qrk.blockr.io/api/v1/address/info/' . $address);
+	if (!empty($data)) {
+	$data = json_decode($data);
+		$return += array(
+		'count' => (int) $data->data->nb_txs,
+		'amount' => (float) $data->data->totalreceived
+		);
+	return $return;
 	}
-	
+	}
 	
 	function get_primecoin($address) {
 		/* it also counts transactions out */
@@ -161,11 +161,11 @@ THE SOFTWARE.
 	
 	function get_monacoin($address) {
 		$return = array();
-		$data = get_request('http://explorer.cryptopoolmining.com/address/'.$address);
+		$data = get_request('http://abe.cryptocoinservice.net/address/'.$address);
 		if (!empty($data)) {
 		  	$return += array(
 				'count' => (int) parse($data,'Transactions in: ','<br />'),
-				'amount' => (float) parse($data,'Received: ',' MON<br />')
+				'amount' => (float) parse($data,'Received: ','<br />')
 			);
 		  	return $return;
 		}
@@ -177,7 +177,7 @@ THE SOFTWARE.
 		if (!empty($data)) {
 		  	$return += array(
 				'count' => (int) parse($data,'Transactions in: ','<br />'),
-				'amount' => (float) parse($data,'Received: ',' SKR<br />')
+				'amount' => (float) parse($data,'Received: ','<br />')
 			);
 		  	return $return;
 		}
@@ -190,7 +190,7 @@ THE SOFTWARE.
 		if (!empty($data)) {
 		  	$return += array(
 				'count' => (int) parse($data,'Transactions in: ','<br />'),
-				'amount' => (float) parse($data,'Received: ',' SHA<br />')
+				'amount' => (float) parse($data,'Received: ','<br />')
 			);
 		  	return $return;
 		}
