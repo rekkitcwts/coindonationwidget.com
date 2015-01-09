@@ -51,7 +51,7 @@ var CoinWidgetCom = {
 		$accepted['currencies'] = ['bitcoin','litecoin','dogecoin', 'peercoin', 'quark', 'primecoin', 'ripple', 'monacoin', 'sakuracoin', 'sha1coin'];
 		$accepted['counters'] = ['count','amount','hide'];
 		$accepted['alignment'] = ['al','ac','ar','bl','bc','br'];
-		$accepted['languages'] = ['jp','en'];
+		$accepted['languages'] = ['jp','en','ko'];
 		var currency_UpperCase = config.currency.charAt(0).toUpperCase() + config.currency.slice(1);
 		if (!config.currency || !CoinWidgetCom.in_array(config.currency,$accepted['currencies']))
 			config.currency = 'bitcoin';
@@ -74,6 +74,9 @@ var CoinWidgetCom = {
 			case 'jp':
 				config.wallet_address = currency_UpperCase +'の財布アドレスが見つかりません!';
 				break;
+			case 'ko':
+				config.wallet_address = '내 ' + currency_UpperCase + ' 지갑 주소가 없습니다!';
+				break;
 		}
 		}
 		
@@ -84,6 +87,9 @@ var CoinWidgetCom = {
 				break;
 			case 'jp':
 				config.lbl_button = '寄付する';
+				break;
+			case 'ko':
+				config.lbl_button = '기부';
 				break;
 		}
 		}
@@ -96,6 +102,9 @@ var CoinWidgetCom = {
 			case 'jp':
 				config.lbl_address = currency_UpperCase + 'を以下のアドレスに寄付する:';
 				break;
+			case 'ko':
+				config.lbl_address = '내 ' + currency_UpperCase + ' 주소';
+				break;
 		}
 		}
 		
@@ -106,6 +115,9 @@ var CoinWidgetCom = {
 				break;
 			case 'jp':
 				config.lbl_count = '回';
+				break;
+			case 'ko':
+				config.lbl_count = '기부';
 				break;
 		}
 		}
@@ -255,6 +267,18 @@ var CoinWidgetCom = {
   				  + '<a class="COINWIDGETCOM_WALLETURI" href="'+$config.currency.toLowerCase()+':'+$config.wallet_address+'" target="_blank" title="ここをクリックするとこのアドレス情報があなたのウォレットに送信されます(あなたのウォレットが対応していない場合、空白のページが表示されるだけなので、手動でアドレスをコピーしてください)" ><img src="'+CoinWidgetCom.source+'/img/icon_wallet.png" /></a>'
   				  + '<a class="COINWIDGETCOM_CLOSER" href="javascript:;" onclick="CoinWidgetCom.hide('+$instance+');" title="このウィンドウを閉じる">x</a>'
   				  + '<img class="COINWIDGET_INPUT_ICON" src="'+CoinWidgetCom.source+'/img/icon_'+$config.currency+'.png" width="16" height="16" title="これは'+$config.currency+'のアドレスです。" />'
+				  ;
+				break;
+
+				case 'ko':
+				$sel = !navigator.userAgent.match(/iPhone/i)?'onclick="this.select();"':'onclick="prompt(\'모두 선택 및 복사:\',\''+$config.wallet_address+'\');"';
+				$html = ''
+				  + '<label>'+$config.lbl_address+'</label>'
+				  + '<input type="text" readonly '+$sel+'  value="'+$config.wallet_address+'" />'
+				  + '<a class="COINWIDGETCOM_CREDITS" href="http://coindonationwidget.com/jp/" target="_blank">CoinWidget.com(modified by jpbitcoin.com)</a>'
+  				  + '<a class="COINWIDGETCOM_WALLETURI" href="'+$config.currency.toLowerCase()+':'+$config.wallet_address+'" target="_blank" title="당신의 지갑에이 주소를 보내려면 여기를 클릭하세요 (당신의 지갑이 호환되지 않는 경우에는 흰색 화면을 닫습니다, 빈 페이지를 얻을 손으로 주소를 복사합니다)" ><img src="'+CoinWidgetCom.source+'/img/icon_wallet.png" /></a>'
+  				  + '<a class="COINWIDGETCOM_CLOSER" href="javascript:;" onclick="CoinWidgetCom.hide('+$instance+');" title="이 창을 닫습니다">x</a>'
+  				  + '<img class="COINWIDGET_INPUT_ICON" src="'+CoinWidgetCom.source+'/img/icon_'+$config.currency+'.png" width="16" height="16" title="이'+$config.currency+'지갑 주소입니다." />'
 				  ;
 				break;
 			}
